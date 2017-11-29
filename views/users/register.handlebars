@@ -1,0 +1,26 @@
+<div class="col-md-6 mx-auto">
+    <div class="card">
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">User Registration</h6>
+            <form action="/users/register" method="post">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" class="form-control" required autofocus value="{{name}}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" class="form-control" required value="{{email}}">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" required value="{{password}}">
+                </div>
+                <div class="form-group">
+                    <label for="cpassword">Confirm Password</label>
+                    <input type="password" name="cpassword" id="cpassword" class="form-control" required value="{{cpassword}}">
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>

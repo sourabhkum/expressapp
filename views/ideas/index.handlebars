@@ -1,0 +1,18 @@
+<div class="col-md-6 mx-auto">
+{{#each ideas}}
+<div class="card mb-2">
+  <div class="card-body">
+   <h4 class="card-title">{{title}}</h4>
+   <p class="card-text">{{details}}</p>
+  </div>
+  <a class="btn btn-dark mb-2" href="/edit/idea/{{id}}">Edit</a>
+  <form action="/ideas/{{id}}?_method=DELETE" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" class="btn btn-danger btn-block" value="Delete">
+    </form>
+   
+</div>
+{{else}}
+<p>No Ideas Lists</p>
+{{/each}}
+</div>
