@@ -11,6 +11,10 @@ const IdeaSchema=new mongoose.Schema({
     created_at:{
         type:Date,
         default:Date.now()
+    },
+    creator:{
+        type:String,
+        required:true
     }
 });
 const Idea=mongoose.model('Idea',IdeaSchema);

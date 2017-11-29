@@ -1,11 +1,16 @@
 const express = require('express');
 const router=express.Router();
+const {Idea}=require('../models/idea');
+//import database connection
+const { mongoose } = require('../db/connection');
 
 router.get('/', (req, res) => {
-    const title = 'Welcome Home'
-    res.render('index', {
-        title: title
-    });
+    Idea.find().then((ideas)=>{
+        res.render('index', {
+            ideas: ideas
+        });
+    })
+    
 });
 
 router.get('/about', (req, res) => {

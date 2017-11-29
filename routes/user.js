@@ -56,11 +56,16 @@ router.get('/users/login', (req, res) => {
 });
 router.post('/users/login', (req, res,next) => {
     passport.authenticate('local',{
-        sucessRedirect:'/ideas',
+        successRedirect:'/ideas',
         failureRedirect: '/users/login',
         failureFlash: true
     })
     (req,res,next);
 });
 
+router.get('/logout',(req,res)=>{
+    req.logout();
+    req.flash('sucess_msg','Logout Successfully');
+    res.redirect('/users/login')
+});
 module.exports = router;

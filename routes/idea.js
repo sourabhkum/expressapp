@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {ensureAuthenticated}=require('../helper/auth')
 
 
 //import database connection
@@ -13,8 +14,8 @@ router.use(function (req, res, next) {
     next();
 });
 //get idea list
-router.get('/ideas',(req,res)=>{
-    Idea.find().then((ideas)=>{
+router.get('/ideas',ensureAuthenticated,(req,res)=>{
+    Idea.find({creator:req.user.id}).then((ideas)=>{
         res.render('ideas/index',{
             ideas:ideas
         });
@@ -23,11 +24,11 @@ router.get('/ideas',(req,res)=>{
     });
 });
 
-router.get('/add/idea', (req, res) => {
+router.get('/add/idea',ensureAuthenticated, (req, res) => {
     res.render('ideas/add');
 });
 
-router.post('/ideas', (req, res) => {
+router.post('/ideas',ensureAuthenticated, (req, res) => {
     let errors = [];
     if (!req.body.title) {
         errors.push({ text: 'Please add a Title' });
@@ -44,7 +45,8 @@ router.post('/ideas', (req, res) => {
     } else {
         const idea = new Idea({
             title: req.body.title,
-            details: req.body.details
+            details: req.body.details,
+            creator:req.user.id,
         });
         idea.save().then((result) => {
             req.flash('sucess_msg','Idea Add Sucessfully');
@@ -55,18 +57,20 @@ router.post('/ideas', (req, res) => {
     }
 });
 
-router.get('/edit/idea/:id', (req, res) => {
-    const id=req.params.id;
-    Idea.findOne({_id:id}).then((idea)=>{
-        res.render('ideas/edit',{
-            idea:idea
-        });
-    }).catch((err)=>{
-        res.send(err);
-    })
+router.get('/edit/idea/:id',ensureAuthenticated, (req, res) => {
 
+    Idea.findOne({_id:req.params.id}).then((idea)=>{
+        if(idea.creator!=req.user.id){
+            req.flash('error_msg','Not Authorised');
+            res.redirect('/ideas');
+        }else{
+            res.render('ideas/edit',{
+                idea:idea
+            });
+        }
+    });
 });
-router.put('/ideas/:id',(req,res)=>{
+router.put('/ideas/:id',ensureAuthenticated,(req,res)=>{
     const id=req.params.id;
     Idea.findOne({_id:id}).then((idea)=>{
         idea.title=req.body.title;
@@ -79,7 +83,7 @@ router.put('/ideas/:id',(req,res)=>{
         });
     });
 });
-router.delete('/ideas/:id',(req,res)=>{
+router.delete('/ideas/:id',ensureAuthenticated,(req,res)=>{
     const id=req.params.id;
     Idea.findOneAndRemove({_id:id}).then((idea)=>{
         if(!idea){
