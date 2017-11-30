@@ -1,5 +1,7 @@
-if(process.env.NODE_ENV==='production'){
-    module.exports={mongoURI:'mongodb://sourabh:sourabh@ds127065.mlab.com:27065/todos'}
-}else{
-    module.exports={mongoURI:'mongodb://localhost/keep'}
+let env = process.env.NODE_ENV;
+if (env === 'development') {
+    MONGO_URI = process.env.MONGO_URI;
+}
+module.exports = {
+    MONGO_URI: MONGO_URI
 }

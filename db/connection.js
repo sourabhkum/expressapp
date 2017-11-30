@@ -1,8 +1,8 @@
-var mongoose=require('mongoose');
+const mongoose=require('mongoose');
+//const db=require('dotenv').config()
 mongoose.Promise=global.Promise;
-const db=require('../config/database');
-
-mongoose.connect(db.mongoURI,{ useMongoClient: true }).then(()=>{
+require('dotenv').config();
+mongoose.connect(process.env.MONGO_URI,{ useMongoClient: true }).then(()=>{
     console.log('Database connected')
 }).catch((err)=>{
     console.log(err);
